@@ -221,7 +221,6 @@ namespace Mandible.Entities
 
         //Extension Contract
 
-        #if STATUS_EFFECTS
         public void AddStatusEffectContribution(StatusEffectContribution contribution)
         {
             StatusEffectHandler handler = GetExtension<StatusEffectHandler>();
@@ -230,7 +229,6 @@ namespace Mandible.Entities
                 handler.AddEffectContribution(contribution.name, contribution.value);
             }
         }
-        #endif
 
         //Getters / Setters
 
