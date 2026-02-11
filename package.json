@@ -1,0 +1,14 @@
+{
+  "name": "com.mandible.entities",
+  "version": "0.1.0-preview",
+  "displayName": "Mandible Entities",
+  "description": "Entity system for characters and enemies in games",
+  "defineConstraints": [
+    {
+      "name": "MANDIBLE_ENTITIES"
+    }
+  ],
+  "dependencies": {
+    "com.mandible.core": "0.0.0"
+  }
+}

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8778708bda6979d45b68355cf4a89222, type: 3}
+  m_Name: ShockEffectData
+  m_EditorClassIdentifier: Assembly-CSharp::ShockEffectData
+  key: Shock
+  description: Standard DoT (Damage Over Time) effect that deals 15 damage every
+    half of a second for 7 seconds. Has larger threshold than Burn.
+  effectName: Shock
+  duration: 7
+  threshold: 20
+  vfxPrefab: {fileID: 5580258651849315952, guid: b5006c43554a5d445b981e9331d22ba1, type: 3}
+  tickRate: 0.5
+  damagePerTick: 15

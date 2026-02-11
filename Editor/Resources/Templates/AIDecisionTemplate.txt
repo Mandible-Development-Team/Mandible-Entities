@@ -1,0 +1,19 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Mandible.Entities.AI
+{
+    [CreateAssetMenu(fileName = "#SCRIPT_NAME#", menuName = "Mandible/Entities/Entity AI/Decisions/#SCRIPT_NAME#", order = 1)]
+    public class #SCRIPT_NAME# : AIDecision
+    {
+        public override string description => 
+            "Add a description of this decision here.";
+        
+        // Returns a weight value for this decision
+        public override float Evaluate(EntityAI ai = default)
+        {
+            return ai.Target != null ? 1f : 0f; // Example: returns 1 if there is a target, otherwise 0
+        }
+    }
+}

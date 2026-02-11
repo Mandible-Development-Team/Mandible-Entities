@@ -1,0 +1,28 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Mandible.Entities.Actions
+{
+    [CreateAssetMenu(fileName = "#SCRIPT_NAME#", menuName = "Mandible/Entities/Entity States/#SCRIPT_NAME#", order = 1)]
+    public class #SCRIPT_NAME# : EntityState
+    {
+        public override string description =>
+            "Add a description of this state here.";
+
+        // Runs when state is entered
+        public override void OnEnter()
+        {
+
+        }
+
+        // Runs on EntityStateMachine update loop
+        public override void OnUpdate()
+        {
+            if (owner.ai.Target == null)
+            {
+                Debug.Log("Attack!");
+            }
+        }
+    }
+}
