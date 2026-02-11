@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 598c5748cafcc7741942858f9a0bce53, type: 3}
+  m_Name: InsectoidFly
+  m_EditorClassIdentifier: Assembly-CSharp::InsectoidFly
+  tag: Default
+  projectilePrefab: {fileID: 0}
+  approachSpeed: 6
+  orbitRadius: 5
+  orbitSpeedDegrees: 15
+  heightOffset: 4
+  orbitForce: 2
+  orbitDirection: 2
+  bobAmplitude: 4
+  bobSpeed: 2
+  jitterUpdateInterval: 0.075
+  jitterRange: {x: 1, y: 1, z: 0}

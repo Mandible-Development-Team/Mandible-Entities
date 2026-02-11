@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8d81734047e3334aa5c538db098eb05, type: 3}
+  m_Name: BurnEffectData
+  m_EditorClassIdentifier: Mandible.Entities::Mandible.Entities.StatusEffects.BurnEffectData
+  key: Burn
+  description: Standard DoT (Damage Over Time) effect that deals 5 flat damage every
+    1 second for 10 seconds.
+  effectName: Burn
+  duration: 10
+  threshold: 15
+  vfxPrefab: {fileID: 5580258651849315952, guid: 687147a0a7a43904b97d65668a011724, type: 3}
+  tickRate: 1
+  damagePerTick: 5
