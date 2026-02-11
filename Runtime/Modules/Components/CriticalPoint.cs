@@ -1,9 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-#if STATUS_EFFECTS
 using Mandible.Entities.StatusEffects;
-#endif
 
 namespace Mandible.Entities
 {
@@ -37,13 +35,10 @@ namespace Mandible.Entities
         }
 
         //Extension Conduct
-
-        #if STATUS_EFFECTS
         public void AddStatusEffectContribution(StatusEffectContribution contribution)
         {
             target?.AddStatusEffectContribution(contribution);
         }
-        #endif
 
         //Getters / Setters
         public virtual HitType GetHitType()

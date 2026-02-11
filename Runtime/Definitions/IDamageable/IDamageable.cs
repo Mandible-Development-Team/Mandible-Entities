@@ -11,8 +11,6 @@ namespace Mandible.Entities
         void TakeDamage(float amount);
 
         // Status Effects
-        #if STATUS_EFFECTS
         void AddStatusEffectContribution(StatusEffectContribution contribution);
-        #endif
     }
 }
