@@ -15,24 +15,26 @@ namespace Mandible.Entities
 {
     public class Entity : MonoBehaviour, IDamageable
     {
-        public EntityMovement movement;
-        public EntityAI ai;
-        public EntityStateMachine stateMachine;
+        [HideInInspector] public EntityMovement movement;
+        [HideInInspector] public EntityAI ai;
+        [HideInInspector] public EntityStateMachine stateMachine;
         protected List<EntityDependency> dependencies = new List<EntityDependency>();
 
         [Header("General")]
         [SerializeField] protected float health = 100f;
         [SerializeField] protected float currentHealth = 0;
         [SerializeField] bool isDead = false;
+        
         [Header("Extensions")]
         [SerializeField] protected List<EntityExtension> extensions = new List<EntityExtension>();
         private List<EntityExtension> preProcess = new List<EntityExtension>();
         private List<EntityExtension> postProcess = new List<EntityExtension>();
+
         [Header("Debug")]
         [SerializeField] public bool debug = false;
 
         //Events
-        [HideInInspector] public UnityEvent takeDamage = new UnityEvent();
+        [HideInInspector] public UnityEvent onDamage = new UnityEvent();
 
         //Editor
         [HideInInspector] public bool usedSetupTool = false;
@@ -82,7 +84,7 @@ namespace Mandible.Entities
         public virtual void TakeDamage(float amount)
         {
             currentHealth -= amount;
-            takeDamage?.Invoke();
+            onDamage?.Invoke();
             if (ShouldDie()) Kill();
         }
 
@@ -112,20 +114,9 @@ namespace Mandible.Entities
 
         public void GetDependencies()
         {
-            if(!TryGetComponent<EntityMovement>(out this.movement))
-            {
-                movement = gameObject.AddComponent<EntityMovement>();
-            }
-
-            if(!TryGetComponent<EntityAI>(out this.ai))
-            {
-                ai = gameObject.AddComponent<EntityAI>();
-            }
-
-            if(!TryGetComponent<EntityStateMachine>(out this.stateMachine))
-            {
-                stateMachine = gameObject.AddComponent<EntityStateMachine>();
-            }
+            movement = gameObject.GetComponent<EntityMovement>();
+            ai = gameObject.GetComponent<EntityAI>();
+            stateMachine = gameObject.GetComponent<EntityStateMachine>();
         }
 
         public virtual void SetDependencyOrder()
@@ -144,7 +135,7 @@ namespace Mandible.Entities
 
             foreach (EntityDependency dependency in dependencies)
             {
-                dependency.Initialize(this);
+                if(dependency != null) dependency.Initialize(this);
             }
         }
 
@@ -160,7 +151,12 @@ namespace Mandible.Entities
 
         public void GetExtensions()
         {
-            extensions = EntityExtensionRegistry.CreateExtensions();
+            //extensions = EntityExtensionRegistry.CreateExtensions();
+
+            extensions = new List<EntityExtension>()
+            {
+                new StatusEffectHandler(), // can have Status Effects
+            };
         }
 
         public T GetExtension<T>() where T : EntityExtension

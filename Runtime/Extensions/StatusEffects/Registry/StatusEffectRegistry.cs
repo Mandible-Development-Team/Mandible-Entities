@@ -2,7 +2,10 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections.Generic;
+
+using System.IO;
 using System.Linq;
+using System.Text;
 
 using Mandible.Registry;
 
@@ -11,7 +14,7 @@ namespace Mandible.Entities.StatusEffects
     [InitializeOnLoad]
     public static class StatusEffectRegistry
     {
-        private const string StatusEffectRegistryFolder = "Entities/StatusEffects/Registry";
+        public const string StatusEffectRegistryFolder = "Entities/StatusEffects/Registry";
         private const string StatusEffectRegistryAssetName = "StatusEffectRegistryData.asset";
 
         static StatusEffectRegistryData registryAsset;
@@ -192,6 +195,9 @@ namespace Mandible.Entities.StatusEffects
 
             EnsureData();
             EnsureCache();
+
+            //Create accessory data
+            StatusEffectEnum.Generate();
         }
 
         static void MarkDirty()
@@ -200,6 +206,80 @@ namespace Mandible.Entities.StatusEffects
             if(registryAsset == null) return;
             UnityEditor.EditorUtility.SetDirty(registryAsset);
             #endif
+        }
+    }
+
+   internal static class StatusEffectEnum
+    {
+        private const string Namespace = "Mandible.Entities.StatusEffects";
+
+        private static string GetOutputPath()
+        {
+            string rootFolder = MandibleData.GetRootFolder();
+            if (string.IsNullOrEmpty(rootFolder))
+            {
+                Debug.LogError("StatusEffectEnum: Mandible root folder not found.");
+                return null;
+            }
+
+            // Build the full path
+            string fullPath = Path.Combine(rootFolder, "Data", StatusEffectRegistry.StatusEffectRegistryFolder, "StatusEffectId.cs");
+            return fullPath.Replace("\\", "/");
+        }
+
+        public static void Generate()
+        {
+            var effects = StatusEffectRegistry.All;
+            if (effects == null) return;
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("// Auto-generated. Do not edit.");
+            sb.AppendLine($"namespace {Namespace}");
+            sb.AppendLine("{");
+            sb.AppendLine("    public enum StatusEffectId");
+            sb.AppendLine("    {");
+            sb.AppendLine("        None = 0,");
+
+            foreach (var e in effects)
+            {
+                if (string.IsNullOrWhiteSpace(e.effectName)) continue;
+                sb.AppendLine($"        {MakeSafe(e.effectName)},");
+            }
+
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
+
+            // Determine output path
+            var outputPath = GetOutputPath();
+            if (string.IsNullOrEmpty(outputPath)) return;
+
+            // Ensure folder exists
+            Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
+
+            var newText = sb.ToString();
+            if (File.Exists(outputPath))
+            {
+                var existing = File.ReadAllText(outputPath);
+                if (existing == newText) return;
+            }
+
+            File.WriteAllText(outputPath, newText);
+            UnityEditor.AssetDatabase.Refresh();
+        }
+
+        private static string MakeSafe(string input)
+        {
+            var valid = new string(input
+                .Where(c => char.IsLetterOrDigit(c) || c == '_')
+                .ToArray());
+
+            if (string.IsNullOrEmpty(valid))
+                valid = "Effect";
+
+            if (char.IsDigit(valid[0]))
+                valid = "_" + valid;
+
+            return valid;
         }
     }
 }

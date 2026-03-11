@@ -149,7 +149,7 @@ namespace Mandible.Entities
 
         private void SetEventListeners()
         {
-            owner.takeDamage.AddListener(OnDamageDefault);
+            owner.onDamage.AddListener(OnDamageDefault);
         }
     }
 }

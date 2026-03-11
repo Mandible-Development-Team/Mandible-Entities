@@ -1,4 +1,5 @@
 using System.Collections;
+using Mandible.Core;
 
 namespace Mandible.Entities.StatusEffects
 {

@@ -12,11 +12,13 @@ namespace Mandible.Entities.Editor
         static string iconPath = "Packages/com.unity.dt.app-ui/PackageResources/Icons/Regular/LegoSmiley.png";
         static string defaultIcon = "d_PreMatCube";
 
-        //Settings
+        //Refs
         private GameObject target;
+        private EntityDefinition entityTemplate;
+
+        //Settings
         private bool keepCurrentValues;
         private bool useRigidbody;
-        private EntityDefinition entityTemplate;
 
         //Dependencies
         private Entity entity;
