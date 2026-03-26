@@ -25,7 +25,14 @@ namespace Mandible.Entities.StatusEffects
             timer += dt;
             if (timer >= Burn.tickRate)
             {
-                owner.TakeDamage(Burn.damagePerTick);
+                HitData data = new HitData()
+                {
+                    hitTarget = owner,
+                    hitType = HitType.Normal,
+                    hitAmount = Burn.damagePerTick
+                };
+
+                owner.TakeDamage(Burn.damagePerTick, data);
                 timer = 0f;
             }
 

@@ -24,6 +24,9 @@ namespace Mandible.Entities
         [SerializeField] protected float health = 100f;
         [SerializeField] protected float currentHealth = 0;
         [SerializeField] bool isDead = false;
+
+        [Header("Data")]
+        [HideInInspector] public List<HitData> hitData = new List<HitData>();
         
         [Header("Extensions")]
         [SerializeField] protected List<EntityExtension> extensions = new List<EntityExtension>();
@@ -70,6 +73,12 @@ namespace Mandible.Entities
             HandlePostProcessExtensions();
         }
 
+        public virtual void LateUpdate()
+        {
+            //ReadHitData();
+            ClearHitData();
+        }
+
         private void Reset()
         {
             EditorApplication.delayCall += () => 
@@ -81,9 +90,17 @@ namespace Mandible.Entities
 
         //API
 
-        public virtual void TakeDamage(float amount)
+        public virtual void TakeDamage(float amount, HitData data = default)
         {
+            if(isDead) return;
+            
             currentHealth -= amount;
+            if(data.hitTarget != null){
+                 hitData.Add(data);
+            }
+            else{
+                Debug.LogError("Entity: TakeDamage called with HitData missing hitTarget reference.");
+            }
             onDamage?.Invoke();
             if (ShouldDie()) Kill();
         }
@@ -108,6 +125,28 @@ namespace Mandible.Entities
         public virtual HitType GetHitType()
         {
             return HitType.Normal;
+        }
+
+        //Data
+
+        public void ReadHitData()
+        {
+            if(hitData.Count <= 0) return;
+
+            foreach (HitData data in hitData)
+            {
+                Debug.Log($"Hit Type: {data.hitType}, Hit Amount: {data.hitAmount}");
+            }
+        }
+
+        public void ClearHitData()
+        {
+            hitData.Clear();
+        }
+
+        public List<HitData> GetHitData()
+        {
+            return hitData;
         }
 
         //Dependencies

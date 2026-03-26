@@ -8,7 +8,7 @@ namespace Mandible.Entities
     {
         bool IsDead { get;}
         HitType GetHitType();
-        void TakeDamage(float amount);
+        void TakeDamage(float amount, HitData data = default);
 
         // Status Effects
         void AddStatusEffectContribution(StatusEffectContribution contribution);

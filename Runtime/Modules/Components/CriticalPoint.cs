@@ -29,9 +29,10 @@ namespace Mandible.Entities
 
         //API
 
-        public virtual void TakeDamage(float amount)
+        public virtual void TakeDamage(float amount, HitData data = default)
         {
-            target?.TakeDamage(amount * damageMultiplier);
+            data.hitTarget = target;
+            target?.TakeDamage(amount * damageMultiplier, data);
         }
 
         //Extension Conduct

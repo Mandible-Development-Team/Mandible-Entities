@@ -25,7 +25,14 @@ namespace Mandible.Entities.StatusEffects
             timer += dt;
             if (timer >= Shock.tickRate)
             {
-                owner.TakeDamage(Shock.damagePerTick);
+                HitData data = new HitData()
+                {
+                    hitTarget = owner,
+                    hitType = HitType.Normal,
+                    hitAmount = Shock.damagePerTick
+                };
+
+                owner.TakeDamage(Shock.damagePerTick, data);
                 timer = 0f;
             }
 

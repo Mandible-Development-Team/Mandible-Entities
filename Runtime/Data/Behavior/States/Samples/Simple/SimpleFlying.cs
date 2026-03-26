@@ -74,8 +74,8 @@ namespace Mandible.Entities.Actions
         public void HandleIdle()
         {
             Vector3 wander = ComputeWanderForce();
-            //Vector3 procedural = ComputeProceduralEffects();
-            Vector3 finalVector = wander;
+            Vector3 procedural = ComputeProceduralEffects();
+            Vector3 finalVector = wander + procedural;
 
             owner.movement.AddForce(finalVector, ForceMode.Force);
         }
@@ -110,17 +110,23 @@ namespace Mandible.Entities.Actions
             }
         }
 
+        private const float DIR_ERROR_SPREAD_SCALAR = 0.1f;
+
         public void FireProjectile()
         {
             Transform projectileOwner = owner.transform.Find(projectileSpawnPointName);
             if(projectileOwner == null) projectileOwner = owner.transform;
 
             Vector3 dirToTarget = (owner.ai.Target.transform.position - projectileOwner.position).normalized;
-            Vector3 dirError = new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f));
-            Vector3 dir = (dirToTarget + dirError).normalized;
+            Vector3 dirError = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * DIR_ERROR_SPREAD_SCALAR;
 
-            Projectile projectile = Instantiate(projectilePrefab, projectileOwner.position + dir, owner.transform.rotation).GetComponent<Projectile>();
-            projectile.GetComponent<Rigidbody>().linearVelocity = owner.transform.forward * projectile.speed;
+            Vector3 dir = (dirToTarget + dirError).normalized;
+            Quaternion rot = Quaternion.LookRotation(dir);
+
+            Debug.DrawRay(projectileOwner.position + dir, rot * Vector3.forward, Color.red, 5f);
+
+            Projectile projectile = Instantiate(projectilePrefab, projectileOwner.position + dir, rot).GetComponent<Projectile>();
+            projectile.GetComponent<Rigidbody>().linearVelocity = dir * projectile.speed;
         }
 
         private Vector3 ComputeWanderForce()
