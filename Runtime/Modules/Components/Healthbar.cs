@@ -8,6 +8,7 @@ public class Healthbar : MonoBehaviour
     [SerializeField] private float visibilitySpeed = 5f;
     [SerializeField] private float healthUpdateSpeed = 15f;
     [SerializeField] private CanvasGroup cg;
+    [SerializeField] private bool startHidden = true;
 
     [Header("Advanced")]
     [SerializeField] private Image healthImage;
@@ -42,7 +43,7 @@ public class Healthbar : MonoBehaviour
         if (healthImage != null) healthImage.fillAmount = targetHealth;
         if (healthDiffImage != null) healthDiffImage.fillAmount = targetHealth;
 
-        HideInstantly();
+        if(startHidden) HideInstantly();
     }
 
     void Update()
