@@ -34,10 +34,8 @@ namespace Mandible.Entities
         public LayerMask hitLayers;
         public bool forwardIsUp;
         
-        #if STATUS_EFFECTS
         [Header("Status Effect")]
         public StatusEffectContribution contribution;
-        #endif
 
         [Header("Physics")]
         [SerializeField] private bool hasImpulse;
@@ -142,14 +140,22 @@ namespace Mandible.Entities
 
             if (damageable != null)
             {
-                #if STATUS_EFFECTS
-                damageable.AddStatusEffectContribution(contribution);
-                #endif
+                HitData data = new HitData
+                {
+                    hitTarget = damageable,
+                    hitType = HitType.Normal,
+                    hitAmount = damage,
+                    hitInfo = new RaycastHit(),
+                    hitDirection = launchDirection.normalized
+                };
 
-                if(!damageable.IsDead) damageable.TakeDamage(damage);
+                damageable.AddStatusEffectContribution(contribution);
+
+                if(!damageable.IsDead) damageable.TakeDamage(damage, data);
             }
         }
 
+        Dictionary<GameObject, bool> alreadyHit = new Dictionary<GameObject, bool>();
         public void HandleExplosion()
         {
             float explosionRadius = 7.5f;
@@ -160,6 +166,10 @@ namespace Mandible.Entities
 
             foreach (Collider nearbyObject in colliders)
             {
+                GameObject rootObject = nearbyObject.transform.root.gameObject;
+                if(alreadyHit.ContainsKey(rootObject) && alreadyHit[rootObject]) continue;
+                alreadyHit[rootObject] = true;
+
                 HandleHit(nearbyObject);
 
                 Rigidbody rb = nearbyObject.GetComponent<Rigidbody>();
@@ -167,6 +177,7 @@ namespace Mandible.Entities
                 if (rb != null)
                     rb.AddExplosionForce(explosionForce, explosionPosition, explosionRadius);
             }
+            alreadyHit.Clear();
 
             Destroy(gameObject);
         }
