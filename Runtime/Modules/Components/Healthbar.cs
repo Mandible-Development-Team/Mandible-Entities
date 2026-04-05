@@ -11,8 +11,8 @@ public class Healthbar : MonoBehaviour
     [SerializeField] private bool startHidden = true;
 
     [Header("Advanced")]
-    [SerializeField] private Image healthImage;
-    [SerializeField] private Image healthDiffImage;
+    [SerializeField] protected Image healthImage;
+    [SerializeField] protected Image healthDiffImage;
     [SerializeField] private LerpKernel kernel = LerpKernel.SmoothStep;
     [SerializeField] private float differentialDelay = 0.75f;
     [SerializeField] private float healthDiffUpdateSpeed = 25f;
