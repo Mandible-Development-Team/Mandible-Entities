@@ -119,22 +119,6 @@ namespace Mandible.Entities
             //Original
             hb.transform.position = screenPos;
 
-            //Experimental (camera space)
-            /*
-            RectTransform canvasRect = (RectTransform)hb.transform.parent;
-
-            RectTransform rect = hb.GetComponent<RectTransform>();
-
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                canvasRect,
-                screenPos,
-                cameraOrigin,
-                out Vector2 localPos
-            );
-
-            rect.localPosition = localPos;
-            */
-
             //Hiding
             bool shouldShow = ShouldShowHealthbar(info);
 

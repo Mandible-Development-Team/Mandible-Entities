@@ -45,7 +45,14 @@ namespace Mandible.Entities
             Vector3 worldPosition = target.transform.position;
             Vector3 screenPosition = cameraOrigin.WorldToScreenPoint(worldPosition);
 
+            if (screenPosition.z <= 0) return; // Behind Camera
+            bool onScreen =
+                screenPosition.x >= 0 && screenPosition.x <= Screen.width &&
+                screenPosition.y >= 0 && screenPosition.y <= Screen.height;
+            if (!onScreen) return;
+            
             DamageNumber dmg = Instantiate(damageNumberPrefab, transform);
+            dmg.SetCamera(cameraOrigin);
             dmg.damage = data.hitAmount;
             dmg.transform.position = screenPosition;
         }

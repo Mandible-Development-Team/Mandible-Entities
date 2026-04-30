@@ -10,5 +10,6 @@
   ],
   "dependencies": {
     "com.mandible.core": "0.0.0"
-  }
+  },
+  "_fingerprint": "efcddf11680fa048e52d87f5532827f7bedeee4e"
 }
