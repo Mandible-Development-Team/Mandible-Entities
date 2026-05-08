@@ -40,6 +40,12 @@ namespace Mandible.Entities
                 accumulatedForce += force;
         }
 
+        public void AddTorque(Vector3 torque, ForceMode mode = ForceMode.Force)
+        {
+            if (rigidBody != null)
+                rigidBody.AddTorque(torque, mode);
+        }
+
         public void MoveRotation(Quaternion rotation, float lerpSpeed = 0f)
         {
             if (rigidBody != null)

@@ -66,11 +66,17 @@ namespace Mandible.Entities
                 animator.enabled = false;
             }
 
+            //Re-enable Rigidbody
+            EnablePhysics(true);
+        }
+
+        public void EnablePhysics(bool enable)
+        {
             //Disable Rigidbody
             if(owner.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
-                rb.isKinematic = false;
-                rb.useGravity = true;
+                rb.isKinematic = !enable;
+                rb.useGravity = enable;
             }
         }
 

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50476202e2906e84eb01bbd77587bf85, type: 3}
-  m_Name: DroneFly
+  m_Name: TestFly
   m_EditorClassIdentifier: Assembly-CSharp::Mandible.Entities.Actions.InsectoidFly
   tag: Default
   projectilePrefab: {fileID: 1805074697936175244, guid: caeba2144944dcf4f8abc163891b322b, type: 3}

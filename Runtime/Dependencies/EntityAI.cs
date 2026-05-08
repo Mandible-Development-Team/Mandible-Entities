@@ -16,14 +16,17 @@ namespace Mandible.Entities
         public AIDecision currentDecision;
         public List<AIDecision> decisions = new List<AIDecision>();
         private AIDecision _prevDecision = default;
+        
+        [Header("Advanced")]
+        public string customDeathStateTag = "";
 
-        //Helpers
+        // Helpers
         public Entity Target => GetTarget();
         public float Health => owner.GetHealth();
         public float HealthPercentage => owner.GetHealthPercentage();
         public bool IsDead => owner.IsDead;
 
-        const string DEATH_STATE_TAG = "Dead";
+        const string DEATH_STATE_TAG = "Death";
 
         public override void Initialize(Entity owner)
         {
@@ -45,15 +48,16 @@ namespace Mandible.Entities
 
         public override void Handle()
         {
-            //Information Gathering
+            // Information Gathering
             targetingSystem?.UpdateTargets();
 
-            //Decisions
+            // Decisions
             if(owner.IsDead)
             {
                 if(!enabled) return;
 
-                bool foundDeadState = QueryStateChange(DEATH_STATE_TAG);
+                string deathStateTag = string.IsNullOrEmpty(customDeathStateTag) ? DEATH_STATE_TAG : customDeathStateTag;
+                bool foundDeadState = QueryStateChange(deathStateTag);
                 if (!foundDeadState){
                     ClearState();
                     stateMachine?.OnDeathDefault();
@@ -65,7 +69,7 @@ namespace Mandible.Entities
                 currentDecision = EvaluateDecisions();
             }
 
-            //Handle state change
+            // Handle state change
             if(_prevDecision != currentDecision)
             {
                 QueryStateChange(currentDecision);
@@ -73,12 +77,10 @@ namespace Mandible.Entities
             }
         }
 
-        //Targeting
-
+        // Targeting
         public Entity GetTarget() => targetingSystem?.GetTarget();
 
-        //Generic Decisions
-
+        // Generic Decisions
         public AIDecision EvaluateDecisions()
         {
             AIDecision bestDecision = null;
@@ -119,8 +121,7 @@ namespace Mandible.Entities
             stateMachine?.ClearState();
         }
 
-        //Helpers
-
+        // Helpers
         public void CreateRuntimeInstances(List<AIDecision> list)
         {
             for (int i = 0; i < list.Count; i++)

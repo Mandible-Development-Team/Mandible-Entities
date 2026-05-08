@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Mandible.Entities.Actions
 {
-    [CreateAssetMenu(fileName = "SimpleFlying", menuName = "Mandible/Entities/Entity States/Simple/SimpleFlying", order = 1)]
+    [CreateAssetMenu(fileName = "TestFlying", menuName = "Mandible/Entities/Entity States/Test/TestFlying", order = 1)]
     public class SimpleFlying : EntityState
     {
         [Header("General")]
