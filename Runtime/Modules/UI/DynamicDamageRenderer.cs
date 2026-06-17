@@ -1,11 +1,9 @@
 using UnityEngine;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Mandible.Entities
 {
-    [DefaultExecutionOrder(-100)]
+    [DefaultExecutionOrder(100)]
     public class DynamicDamageRenderer : MonoBehaviour
     {
         public Camera cameraOrigin;
@@ -13,59 +11,57 @@ namespace Mandible.Entities
 
         [Header("Settings")]
         public float renderRadius = 50f;
-        public LayerMask entityLayer;
-        public List<Entity> entitiesToRender = new List<Entity>();
 
-        void Start()
-        {
-            
-        }
+        private HashSet<Entity> subscribedEntities = new HashSet<Entity>();
 
-        // Update is called once per frame
-        void LateUpdate()
+        void Update()
         {
-            GetEntities();
-            DrawDamageNumbers();
-        }
-
-        void DrawDamageNumbers()
-        {
-            foreach(Entity entity in entitiesToRender)
+            // Only search for new entities to subscribe to. 
+            // We do this less frequently if needed, or keep it in Update for simplicity.
+            foreach (var entity in FindObjectsByType<Entity>(FindObjectsSortMode.None))
             {
-                entity.GetHitData().ForEach(data =>
+                if (!subscribedEntities.Contains(entity))
                 {
-                    DrawDamageNumber(data);
-                });
+                    entity.OnDamageReceived += HandleDamageEvent;
+                    subscribedEntities.Add(entity);
+                }
             }
         }
 
-        void DrawDamageNumber(HitData data)
+        void HandleDamageEvent(HitData data)
         {
             Entity target = data.hitTarget as Entity;
-            Vector3 worldPosition = target.transform.position;
-            Vector3 screenPosition = cameraOrigin.WorldToScreenPoint(worldPosition);
+            if (target == null) return;
 
+            // 1. DISTANCE CHECK (The Sphere Logic)
+            float dist = Vector3.Distance(cameraOrigin.transform.position, target.transform.position);
+            if (dist > renderRadius) return; // Ignore if outside sphere
+
+            // 2. FRUSTUM CHECK (The "In Front" Logic)
+            Vector3 screenPosition = cameraOrigin.WorldToScreenPoint(target.transform.position);
             if (screenPosition.z <= 0) return; // Behind Camera
-            bool onScreen =
-                screenPosition.x >= 0 && screenPosition.x <= Screen.width &&
-                screenPosition.y >= 0 && screenPosition.y <= Screen.height;
+            
+            bool onScreen = screenPosition.x >= 0 && screenPosition.x <= Screen.width &&
+                            screenPosition.y >= 0 && screenPosition.y <= Screen.height;
             if (!onScreen) return;
             
+            // 3. RENDER
+            DrawDamageNumber(data, screenPosition);
+        }
+
+        void DrawDamageNumber(HitData data, Vector3 screenPos)
+        {
             DamageNumber dmg = Instantiate(damageNumberPrefab, transform);
             dmg.SetCamera(cameraOrigin);
             dmg.damage = data.hitAmount;
-            dmg.transform.position = screenPosition;
+            dmg.transform.position = screenPos;
         }
 
-        void GetEntities()
+        void OnDisable()
         {
-            entitiesToRender.Clear();
-            Collider[] hits = Physics.OverlapSphere(cameraOrigin.transform.position, renderRadius);
-            foreach (Collider col in hits)
+            foreach (var entity in subscribedEntities)
             {
-                Entity entity = col.GetComponent<Entity>();
-                if (entity != null)
-                    entitiesToRender.Add(entity);
+                if (entity != null) entity.OnDamageReceived -= HandleDamageEvent;
             }
         }
     }

@@ -33,7 +33,7 @@ namespace Mandible.Entities
         HashSet<Entity> hitEntities = new HashSet<Entity>();
         Dictionary<Healthbar, Coroutine> removeCoroutines = new Dictionary<Healthbar, Coroutine>();
         
-        void Update()
+        void LateUpdate()
         {
             RenderHealthbars();
         }

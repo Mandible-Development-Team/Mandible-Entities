@@ -38,6 +38,7 @@ namespace Mandible.Entities
 
         //Events
         [HideInInspector] public UnityEvent onDamage = new UnityEvent();
+        [HideInInspector] public event System.Action<HitData> OnDamageReceived;
 
         //Editor
         [HideInInspector] public bool usedSetupTool = false;
@@ -102,6 +103,7 @@ namespace Mandible.Entities
                 Debug.LogError("Entity: TakeDamage called with HitData missing hitTarget reference.");
             }
             onDamage?.Invoke();
+            OnDamageReceived?.Invoke(data);
             if (ShouldDie()) Kill();
         }
 

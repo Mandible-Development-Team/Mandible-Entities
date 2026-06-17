@@ -32,6 +32,9 @@ namespace Mandible.Entities
         public virtual void TakeDamage(float amount, HitData data = default)
         {
             data.hitTarget = target;
+            data.hitType = GetHitType();
+            data.hitAmount = amount * damageMultiplier;
+
             target?.TakeDamage(amount * damageMultiplier, data);
         }
 
