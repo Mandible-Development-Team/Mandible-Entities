@@ -3,6 +3,9 @@
   "version": "0.1.0-preview",
   "displayName": "Mandible Entities",
   "description": "Entity system for characters and enemies in games",
+  "author": {
+    "name": "Mandible Studios"
+  },
   "defineConstraints": [
     {
       "name": "MANDIBLE_ENTITIES"
