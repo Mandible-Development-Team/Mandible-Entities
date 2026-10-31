@@ -18,6 +18,8 @@ namespace Mandible.Entities
         [HideInInspector] public EntityMovement movement;
         [HideInInspector] public EntityAI ai;
         [HideInInspector] public EntityStateMachine stateMachine;
+        [SerializeField] public Animator animator;
+        [SerializeField] public Transform target;
         protected List<EntityDependency> dependencies = new List<EntityDependency>();
 
         [Header("General")]

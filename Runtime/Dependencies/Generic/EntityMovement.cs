@@ -21,7 +21,7 @@ namespace Mandible.Entities
 
         public void Start()
         {
-            rigidBody = owner.GetComponent<Rigidbody>();
+
         }
 
         public override void Handle()
@@ -44,6 +44,18 @@ namespace Mandible.Entities
         {
             if (rigidBody != null)
                 rigidBody.AddTorque(torque, mode);
+        }
+
+        public void SetVelocity(Vector3 velocity)
+        {
+            if (rigidBody != null)
+                rigidBody.velocity = velocity;
+        }
+
+        public void SetVelocityXZ(Vector3 velocity)
+        {
+            if (rigidBody != null)
+                rigidBody.velocity = new Vector3(velocity.x, rigidBody.velocity.y, velocity.z);
         }
 
         public void MoveRotation(Quaternion rotation, float lerpSpeed = 0f)

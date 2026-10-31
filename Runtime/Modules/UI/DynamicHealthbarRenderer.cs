@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
 
 namespace Mandible.Entities
 {
@@ -114,6 +116,13 @@ namespace Mandible.Entities
 
             //Positioning
             Vector3 worldPos = ((MonoBehaviour)info.target).transform.position + Vector3.up * heightOffset;
+
+            Collider col = ((MonoBehaviour)info.target).GetComponent<Collider>();
+            if (col != null)
+            {
+                worldPos = col.bounds.center + Vector3.up * col.bounds.extents.y + Vector3.up * heightOffset;
+            }
+
             Vector3 screenPos = cameraOrigin.WorldToScreenPoint(worldPos);
 
             //Original

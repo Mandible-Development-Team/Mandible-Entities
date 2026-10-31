@@ -5,31 +5,12 @@ using Mandible.Entities.StatusEffects;
 
 namespace Mandible.Entities
 {
-    public class CriticalPoint : MonoBehaviour, IDamageable
+    public class CriticalPoint : EntityTransform
     {
-        [SerializeField] GameObject targetObject;
-        [HideInInspector] public IDamageable target;
-
-        static float damageMultiplier = 1.5f;
-
-        public void Awake()
-        {
-            if(targetObject == null)
-            {
-                Debug.LogError("CriticalPoint: "+gameObject.name+" has no targetObject assigned.");
-            }
-
-            target = targetObject.GetComponent<IDamageable>();
-
-            if(target == null)
-            {
-                Debug.LogError("CriticalPoint: "+gameObject.name+" targetObject has no IDamageable component.");
-            }
-        }
+        const float damageMultiplier = 1.5f;
 
         //API
-
-        public virtual void TakeDamage(float amount, HitData data = default)
+        public override void TakeDamage(float amount, HitData data = default)
         {
             data.hitTarget = target;
             data.hitType = GetHitType();
@@ -45,14 +26,9 @@ namespace Mandible.Entities
         }
 
         //Getters / Setters
-        public virtual HitType GetHitType()
+        public override HitType GetHitType()
         {
             return HitType.Critical;
-        }
-
-        public virtual bool IsDead
-        {
-            get { return target?.IsDead ?? false; }
         }
     }
 }
