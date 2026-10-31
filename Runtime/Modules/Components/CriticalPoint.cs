@@ -20,7 +20,7 @@ namespace Mandible.Entities
         }
 
         //Extension Conduct
-        public void AddStatusEffectContribution(StatusEffectContribution contribution)
+        public override void AddStatusEffectContribution(StatusEffectContribution contribution)
         {
             target?.AddStatusEffectContribution(contribution);
         }

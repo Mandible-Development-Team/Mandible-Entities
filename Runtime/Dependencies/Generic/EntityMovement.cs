@@ -49,13 +49,13 @@ namespace Mandible.Entities
         public void SetVelocity(Vector3 velocity)
         {
             if (rigidBody != null)
-                rigidBody.velocity = velocity;
+                rigidBody.linearVelocity = velocity;
         }
 
         public void SetVelocityXZ(Vector3 velocity)
         {
             if (rigidBody != null)
-                rigidBody.velocity = new Vector3(velocity.x, rigidBody.velocity.y, velocity.z);
+                rigidBody.linearVelocity = new Vector3(velocity.x, rigidBody.linearVelocity.y, velocity.z);
         }
 
         public void MoveRotation(Quaternion rotation, float lerpSpeed = 0f)

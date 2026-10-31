@@ -24,8 +24,9 @@ namespace Mandible.Entities
             }
         }
 
-        public override void TakeDamage(float amount, HitData data = default);
+        public abstract void TakeDamage(float amount, HitData data = default);
         public abstract HitType GetHitType();
+        public abstract void AddStatusEffectContribution(StatusEffectContribution contribution);
 
         public virtual bool IsDead
         {
