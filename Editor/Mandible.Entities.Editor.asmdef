@@ -1,0 +1,32 @@
+{
+    "name": "Mandible.Entities.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ef8b64a5d02ba1545b589673e5f7d023",
+        "GUID:8a33b921c6a4a91449b57791aa292d24",
+        "GUID:57c57a84ca974a3459154209e2e9021f",
+        "GUID:ef95c4dea9018f34ab6c48401e307cd9"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.mandible.abilitysystem",
+            "expression": "0.0.0",
+            "define": "MANDIBLE_ABILITY_SYSTEM"
+        },
+        {
+            "name": "com.mandible.playercontroller",
+            "expression": "0.0.0",
+            "define": "MANDIBLE_PLAYER_CONTROLLER"
+        }
+    ],
+    "noEngineReferences": false
+}
