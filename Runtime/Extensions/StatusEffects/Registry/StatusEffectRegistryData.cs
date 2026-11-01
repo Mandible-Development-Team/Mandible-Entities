@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-using Mandible.Registry;
-
 namespace Mandible.Entities.StatusEffects
 {
     #if MANDIBLE_DEVELOPER_MODE

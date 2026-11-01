@@ -6,6 +6,8 @@ namespace Mandible.Entities.StatusEffects
     {
         float timer;
         GameObject vfx;
+        Collider col;
+        Transform root;
 
         ShockEffectData Shock => (ShockEffectData)data;
 
@@ -17,10 +19,16 @@ namespace Mandible.Entities.StatusEffects
             //Spawn VFX
             if (vfx != null) return;
             vfx = Object.Instantiate(Shock.vfxPrefab);
+            col = owner.transform.GetComponentInChildren<Collider>();
+            root = owner.root;
         }
 
         public override void OnTick(float dt)
         {
+            Vector3 target = owner.transform.position;
+            if (root != null) target = root.position;
+            else if (col != null) target = col.bounds.center;
+
             //Damage over time
             timer += dt;
             if (timer >= Shock.tickRate)
@@ -29,7 +37,8 @@ namespace Mandible.Entities.StatusEffects
                 {
                     hitTarget = owner,
                     hitType = HitType.Normal,
-                    hitAmount = Shock.damagePerTick
+                    hitAmount = Shock.damagePerTick,
+                    hitPosition = target,
                 };
 
                 owner.TakeDamage(Shock.damagePerTick, data);
@@ -38,7 +47,7 @@ namespace Mandible.Entities.StatusEffects
 
             //VFX follow
             if (vfx != null)
-                vfx.transform.position = owner.transform.position;
+                vfx.transform.position = target;
         }
 
         public override void OnRemove()

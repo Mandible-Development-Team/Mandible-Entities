@@ -19,12 +19,6 @@ namespace Mandible.Entities
             target?.TakeDamage(amount * damageMultiplier, data);
         }
 
-        //Extension Conduct
-        public override void AddStatusEffectContribution(StatusEffectContribution contribution)
-        {
-            target?.AddStatusEffectContribution(contribution);
-        }
-
         //Getters / Setters
         public override HitType GetHitType()
         {

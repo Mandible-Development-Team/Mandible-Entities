@@ -16,8 +16,6 @@ namespace Mandible.Entities
 
         void Update()
         {
-            // Only search for new entities to subscribe to. 
-            // We do this less frequently if needed, or keep it in Update for simplicity.
             foreach (var entity in FindObjectsByType<Entity>(FindObjectsSortMode.None))
             {
                 if (!subscribedEntities.Contains(entity))
@@ -33,19 +31,28 @@ namespace Mandible.Entities
             Entity target = data.hitTarget as Entity;
             if (target == null) return;
 
-            // 1. DISTANCE CHECK (The Sphere Logic)
             float dist = Vector3.Distance(cameraOrigin.transform.position, target.transform.position);
-            if (dist > renderRadius) return; // Ignore if outside sphere
+            if (dist > renderRadius) return;
 
-            // 2. FRUSTUM CHECK (The "In Front" Logic)
-            Vector3 screenPosition = cameraOrigin.WorldToScreenPoint(target.transform.position);
-            if (screenPosition.z <= 0) return; // Behind Camera
+            Vector3 worldPos = target.transform.position;
+            Collider col = target.GetComponent<Collider>();
+
+            if (data.hitPosition != default)
+            {
+                worldPos = data.hitPosition;
+            }
+            else if (col != null)
+            {
+                worldPos = col.bounds.center;
+            }
+    
+            Vector3 screenPosition = cameraOrigin.WorldToScreenPoint(worldPos);
+            if (screenPosition.z <= 0) return;
             
             bool onScreen = screenPosition.x >= 0 && screenPosition.x <= Screen.width &&
                             screenPosition.y >= 0 && screenPosition.y <= Screen.height;
             if (!onScreen) return;
             
-            // 3. RENDER
             DrawDamageNumber(data, screenPosition);
         }
 

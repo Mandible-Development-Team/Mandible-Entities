@@ -71,7 +71,7 @@ namespace Mandible.Entities.StatusEffects
 
         void EditorReload()
         {
-            StatusEffectRegistry.EditorReload();
+            StatusEffectRegistryEditor.EditorReload();
             statusEffects = GetStatusEffectEntries();
         }
 
@@ -193,7 +193,7 @@ namespace Mandible.Entities.StatusEffects
         {
             if(entry != null)
             {
-                StatusEffectRegistry.RemoveStatusEffectData(entry.data);
+                StatusEffectRegistryEditor.RemoveStatusEffectData(entry.data);
                 statusEffectsForRemoval.Add(entry);
             }
         }
@@ -202,7 +202,7 @@ namespace Mandible.Entities.StatusEffects
         {
             if(entry != null)
             {
-                StatusEffectRegistry.UpdateStatusEffectData(before.data, entry.data);
+                StatusEffectRegistryEditor.UpdateStatusEffectData(before.data, entry.data);
             }
         }
 

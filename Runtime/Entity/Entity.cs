@@ -19,13 +19,16 @@ namespace Mandible.Entities
         [HideInInspector] public EntityAI ai;
         [HideInInspector] public EntityStateMachine stateMachine;
         [SerializeField] public Animator animator;
-        [SerializeField] public Transform target;
         protected List<EntityDependency> dependencies = new List<EntityDependency>();
 
         [Header("General")]
         [SerializeField] protected float health = 100f;
         [SerializeField] protected float currentHealth = 0;
         [SerializeField] bool isDead = false;
+
+        [Header("Transform")]
+        [SerializeField] public Transform root;
+        [SerializeField] public Transform target;
 
         [Header("Data")]
         [HideInInspector] public List<HitData> hitData = new List<HitData>();

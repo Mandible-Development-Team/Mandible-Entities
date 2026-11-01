@@ -63,7 +63,8 @@ namespace Mandible.Entities
             {
                 Entity entity = hit.GetComponent<Entity>();
                 
-                if (hit.TryGetComponent<CriticalPoint>(out var crit)) entity = crit.target as Entity;
+                if (hit.TryGetComponent<EntityTransform>(out var et)) entity = et.target as Entity;
+                //if (hit.TryGetComponent<CriticalPoint>(out var crit)) entity = crit.target as Entity;
                 if (entity != null) hitEntities.Add(entity);
                 
                 if (entity == null || entity.IsDead) continue;

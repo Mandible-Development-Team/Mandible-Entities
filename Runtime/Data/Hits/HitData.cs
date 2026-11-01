@@ -10,6 +10,7 @@ namespace Mandible.Entities
         public HitType hitType;
         public float hitAmount;
         public RaycastHit hitInfo;
+        public Vector3 hitPosition;
         public Vector3 hitDirection;
     }
 }

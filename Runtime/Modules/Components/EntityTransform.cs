@@ -5,7 +5,7 @@ using Mandible.Entities.StatusEffects;
 
 namespace Mandible.Entities
 {
-    public abstract class EntityTransform : MonoBehaviour, IDamageable
+    public class EntityTransform : MonoBehaviour, IDamageable
     {
         [SerializeField] public GameObject targetObject;
         [HideInInspector] public IDamageable target;
@@ -24,11 +24,32 @@ namespace Mandible.Entities
             }
         }
 
-        public abstract void TakeDamage(float amount, HitData data = default);
-        public abstract HitType GetHitType();
-        public abstract void AddStatusEffectContribution(StatusEffectContribution contribution);
+        void Reset()
+        {
+            target = transform.root.GetComponentInChildren<IDamageable>();
+            if (target != null) targetObject = ((MonoBehaviour)target).gameObject;
+        }
 
-        public virtual bool IsDead
+        public virtual void TakeDamage(float amount, HitData data = default)
+        {
+            data.hitTarget = target;
+            data.hitType = GetHitType();
+            data.hitAmount = amount;
+
+            target?.TakeDamage(amount, data);
+        }
+
+        public virtual HitType GetHitType()
+        {
+            return HitType.Normal;
+        }
+
+        public void AddStatusEffectContribution(StatusEffectContribution contribution)
+        {
+            target?.AddStatusEffectContribution(contribution);
+        }
+
+        public bool IsDead
         {
             get { return target?.IsDead ?? false; }
         }
