@@ -11,6 +11,7 @@ namespace Mandible.Entities
 
         [Header("Settings")]
         public float renderRadius = 50f;
+        public DamageNumberProfile profile;
 
         private HashSet<Entity> subscribedEntities = new HashSet<Entity>();
 
@@ -58,7 +59,8 @@ namespace Mandible.Entities
 
         void DrawDamageNumber(HitData data, Vector3 screenPos)
         {
-            DamageNumber dmg = Instantiate(damageNumberPrefab, transform);
+            DamageNumber prefab = profile != null ? profile.Evaluate(data) : damageNumberPrefab;
+            DamageNumber dmg = Instantiate(prefab, transform);
             dmg.SetCamera(cameraOrigin);
             dmg.damage = data.hitAmount;
             dmg.transform.position = screenPos;
